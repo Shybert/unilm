@@ -20,6 +20,9 @@ class RetrievalDataLoader:
         self.tokenizer = tokenizer
         corpus_path = os.path.join(args.data_dir, 'passages.jsonl.gz')
         self.corpus: Dataset = load_dataset('json', data_files=corpus_path)['train']
+        self.corpus_by_id = {}
+        for document in self.corpus:
+            self.corpus_by_id[int(document['doc_id'])] = document
         self.train_dataset, self.eval_dataset = self._get_transformed_datasets()
 
         # use its state to decide which positives/negatives to sample
@@ -36,8 +39,8 @@ class RetrievalDataLoader:
         )
         assert len(input_doc_ids) == len(examples['query']) * self.args.train_n_passages
 
-        input_docs: List[str] = [self.corpus[doc_id]['contents'] for doc_id in input_doc_ids]
-        input_titles: List[str] = [self.corpus[doc_id]['title'] for doc_id in input_doc_ids]
+        input_docs = [self.corpus_by_id[doc_id]['text'] for doc_id in input_doc_ids]
+        input_titles = [self.corpus_by_id[doc_id]['title'] for doc_id in input_doc_ids]
 
         query_batch_dict = self.tokenizer(examples['query'],
                                           max_length=self.args.q_max_len,

@@ -18,9 +18,9 @@ mkdir -p "${OUTPUT_DIR}"
 PROC_PER_NODE=$(nvidia-smi --list-gpus | wc -l)
 # python -u -m torch.distributed.launch --nproc_per_node ${PROC_PER_NODE} src/train_biencoder.py \
 deepspeed src/train_biencoder.py --deepspeed ds_config.json \
-    --model_name_or_path intfloat/simlm-base-msmarco \
-    --per_device_train_batch_size 16 \
-    --per_device_eval_batch_size 32 \
+    --model_name_or_path intfloat/e5-small-v2 \
+    --per_device_train_batch_size 8 \
+    --per_device_eval_batch_size 16 \
     --add_pooler False \
     --t 0.02 \
     --seed 1234 \
@@ -32,7 +32,7 @@ deepspeed src/train_biencoder.py --deepspeed ds_config.json \
     --p_max_len 144 \
     --train_n_passages 16 \
     --dataloader_num_workers 1 \
-    --num_train_epochs 3 \
+    --num_train_epochs 9 \
     --learning_rate 2e-5 \
     --use_scaled_loss True \
     --warmup_steps 1000 \
