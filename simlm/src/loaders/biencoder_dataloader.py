@@ -22,7 +22,7 @@ class RetrievalDataLoader:
         self.corpus: Dataset = load_dataset('json', data_files=corpus_path)['train']
         self.corpus_by_id = {}
         for document in self.corpus:
-            self.corpus_by_id[int(document['doc_id'])] = document
+            self.corpus_by_id[document['doc_id']] = document
         self.train_dataset, self.eval_dataset = self._get_transformed_datasets()
 
         # use its state to decide which positives/negatives to sample
@@ -68,7 +68,7 @@ class RetrievalDataLoader:
                 if q_id not in qid_to_doc_id_to_score:
                     qid_to_doc_id_to_score[q_id] = {}
                 for doc_id, score in zip(ex['doc_id'], ex['score']):
-                    qid_to_doc_id_to_score[q_id][int(doc_id)] = score
+                    qid_to_doc_id_to_score[q_id][doc_id] = score
 
             for idx, query_id in enumerate(examples['query_id']):
                 _update_qid_pid_score(query_id, examples['positives'][idx])
