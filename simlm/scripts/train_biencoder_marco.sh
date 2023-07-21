@@ -30,9 +30,9 @@ deepspeed src/train_biencoder.py --deepspeed ds_config.json \
     --validation_file "${DATA_DIR}/dev.jsonl" \
     --q_max_len 32 \
     --p_max_len 144 \
-    --train_n_passages 16 \
+    --train_n_passages 2 \
     --dataloader_num_workers 1 \
-    --num_train_epochs 9 \
+    --num_train_epochs 3 \
     --learning_rate 2e-5 \
     --use_scaled_loss True \
     --warmup_steps 1000 \
